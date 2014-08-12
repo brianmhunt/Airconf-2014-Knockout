@@ -1,0 +1,16 @@
+{
+  "name": "Airconf-2014-Knockout",
+  "version": "0.0.1",
+  "description": "Airconf 2014 Presentation Repo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Airconf",
+    "Knockout",
+    "Promise"
+  ],
+  "author": "Brian M Hunt",
+  "license": "MIT"
+}

@@ -1,0 +1,85 @@
+".text.html":
+  "Step 1: Add <script> tags":
+    prefix: "s1"
+    body: """
+    <script src='../lib/knockout.js'></script>
+
+    <!-- plugins -->
+    <script src='../lib/knockout-es5.js'></script>
+    <script src='../lib/knockout-projections.js'></script>
+    <script src='../lib/knockout.punches.js'></script>
+
+    <!-- Some data -->
+    <script src='../data/hosd.js'></script>
+
+    <!-- Our javascript (we'll be editing) -->
+    <script src="./my.js"></script>
+    """
+
+  "Step 3: Show the list on the screen":
+    prefix: "s3"
+    body: """
+      <h1>List of State defaults</h1>
+
+      <ul data-bind='foreach: defaults'>
+        <li>
+          <span data-bind='text: year'></span>
+        </li>
+      </ul>
+    """
+
+  "Step 4: Use Punches {{ }} interpolation":
+    prefix: "s4"
+    body: """
+      <b>{{ year }}</b> {{ state }}
+    """
+
+  "Step 6: Add the year search":
+    prefix: "s6"
+    body: """
+      <input type='text' data-bind='textInput: grep'/>
+    """
+
+
+".source.js":
+  "Step 2: Add KO to my.js":
+    prefix: "s2"
+    body: """
+    var view = {
+      defaults: window.hosd
+    };
+
+    ko.applyBindings(view);
+    """
+
+  "Step 5: Enable punches":
+    prefix: "s5"
+    body: """
+      ko.punches.enableAll();
+    """
+
+  "Step 7: Use projections to filter the view":
+    prefix: "s7"
+    body: """
+      function filter(item) {
+        if (!view.grep()) {
+          return true;
+        }
+        return (item.year + " " + item.state).toLowerCase()
+          .indexOf(view.grep().toLowerCase()) >= 0;
+      }
+
+      var view = {
+        grep: ko.observable(),
+      }
+
+      view.defaults = ko.observableArray(window.hosd).filter(filter);
+    """
+
+  "Step 8: Use rate limit to improve performance":
+    prefix: "s8"
+    body: """
+      var view = {
+        grep: ko.observable(),
+      }
+    """

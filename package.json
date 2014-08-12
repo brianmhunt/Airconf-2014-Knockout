@@ -1,8 +1,7 @@
 {
   "name": "Airconf-2014-Knockout",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Airconf 2014 Presentation Repo",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,6 +10,9 @@
     "Knockout",
     "Promise"
   ],
+  "engines": {
+    "atom": ">0.90.0"
+  },
   "author": "Brian M Hunt",
   "license": "MIT"
 }

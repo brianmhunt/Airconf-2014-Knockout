@@ -1,0 +1,28 @@
+{
+  "name": "Airconf-2014-Knockout",
+  "version": "0.1.0",
+  "homepage": "https://github.com/brianmhunt/Airconf-2014-Knockout",
+  "authors": [
+    "Brian M Hunt <brianmhunt@gmail.com>"
+  ],
+  "description": "AirConf 2014 - Knockout",
+  "keywords": [
+    "knockout",
+    "airconf"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "knockout": "~3.2.0",
+    "knockout.punches": "~0.3.1",
+    "knockout-es5": "*",
+    "knockout-projections": "~1.1.0-pre"
+  }
+}

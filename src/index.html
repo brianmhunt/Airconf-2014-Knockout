@@ -5,5 +5,42 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+  <h1>List of Defaulted States</h1>
+
+  <input type='text' data-bind='textInput: grep'/>
+  <div class='sort'>
+    Sort by ({{ sort_by()|default:"unsorted" }}):<br/>
+    <button data-bind='click: sort_click'>None</button>
+    <button data-bind='click: sort_click'>State</button>
+    <button data-bind='click: sort_click'>Year</button>
+  </div>
+
+  <table>
+    <thead>
+      <th> Year </th> <th> State </th> <th> Comment </th>
+    </thead>
+    <tbody data-bind='foreach: defaults'>
+      <tr data-bind='component: { name: "state-default-tr", params: {data: $data} }'>
+      </tr>
+    </tbody>
+  </table>
+
+  <template id='state-default-tr-template'>
+    <td> {{ year }} </td> <td> {{ state }} </td> <td> {{ comment }} </td>
+  </template>
+
+  <!-- scripts -->
+  <script src='../lib/knockout.js'></script>
+  <script src='../lib/lodash.js'></script>
+
+  <!-- plugins -->
+  <script src='../lib/knockout-projections.js'></script>
+  <script src='../lib/knockout.punches.js'></script>
+
+  <!-- Some data -->
+  <script src='../data/hosd.js'></script>
+
+  <!-- Our javascript (we'll be editing) -->
+  <script src="./my.js"></script>
 </body>
 </html>

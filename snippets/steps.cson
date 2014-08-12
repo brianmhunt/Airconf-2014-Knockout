@@ -2,16 +2,15 @@
   "Step 1: Add <script> tags":
     prefix: "s1"
     body: """
-    <script src='../lib/knockout.js'></script>
 
+    <!-- SCRIPTS -->
+    <script src='../lib/knockout.js'></script>
+    <script src='../lib/lodash.js'></script>
     <!-- plugins -->
-    <script src='../lib/knockout-es5.js'></script>
     <script src='../lib/knockout-projections.js'></script>
     <script src='../lib/knockout.punches.js'></script>
-
     <!-- Some data -->
     <script src='../data/hosd.js'></script>
-
     <!-- Our javascript (we'll be editing) -->
     <script src="./my.js"></script>
     """
@@ -34,10 +33,71 @@
       <b>{{ year }}</b> {{ state }}
     """
 
-  "Step 6: Add the year search":
+  "Step 6: Add grepping":
     prefix: "s6"
     body: """
       <input type='text' data-bind='textInput: grep'/>
+    """
+
+  "Step 10: Change to a web component":
+    prefix: "s10"
+    body: """
+    <state-default params="data: $data"></state-default>
+    """
+
+  "Step 12: Add state-default-template <template>":
+    prefix: "s12"
+    body: """
+      <b>{{ year }}</b> {{ state }}
+    """
+
+  "Step 13: Change state template to a <tr>":
+    prefix: "s13"
+    body: """
+      <table>
+        <thead>
+          <th> Year </th> <th> State </th> <th> Comment </th>
+        </thead>
+        <tbody data-bind='foreach: defaults'>
+          <state-default-tr params="data: $data"></state-default-tr>
+        </tbody>
+      </table>
+
+      <template id='state-default-tr-template'>
+        <tr>
+          <td> {{ year }} </td> <td> {{ state }} </td> <td> {{ comment }} </td>
+        </tr>
+      </template>
+    """
+
+  "Step 15: Use inline components: binding":
+    prefix: "s15"
+    body: """
+      <table>
+        <thead>
+          <th> Year </th> <th> State </th> <th> Comment </th>
+        </thead>
+        <tbody data-bind='foreach: defaults'>
+          <tr data-bind='component: {
+              name: "state-default-tr", params: {data: $data} }'>
+          </tr>
+        </tbody>
+      </table>
+
+      <template id='state-default-tr-template'>
+        <td> {{ year }} </td> <td> {{ state }} </td> <td> {{ comment }} </td>
+      </template>
+    """
+
+  "Step 16: Add sort-by html":
+    prefix: "s16"
+    body: """
+      <div class='sort'>
+        Sort by ({{ sort_by()|default:"unsorted" }}):<br/>
+        <button data-bind='click: sort_click'>None</button>
+        <button data-bind='click: sort_click'>State</button>
+        <button data-bind='click: sort_click'>Year</button>
+      </div>
     """
 
 
@@ -71,7 +131,7 @@
 
       var view = {
         grep: ko.observable(),
-      }
+      };
 
       view.defaults = ko.observableArray(window.hosd).filter(filter);
     """
@@ -79,7 +139,113 @@
   "Step 8: Use rate limit to improve performance":
     prefix: "s8"
     body: """
-      var view = {
-        grep: ko.observable(),
+      grep: ko.observable().extend({rateLimit: 200}),
+    """
+
+  "Step 9: Using Web Components":
+    prefix: "s9"
+    body: """
+      ko.components.register("state-default", {
+        viewModel: function(params) {
+          this.year = params.data.year || "unknown";
+          this.state = params.data.state;
+          this.comment = params.data.comment;
+        },
+        template: "<b>{{ year }}</b> {{ state }}"
+      });
+    """
+
+  "Step 11: Switch to template-by-element":
+    prefix: "s11"
+    body: """
+      template: {element: "state-default-template"}
+    """
+
+  "Step 14: Change ko.component to -tr":
+    prefix: "s14"
+    body: """
+      ko.components.register("state-default-tr", {
+        viewModel: function(params) {
+          this.year = params.data.year || "unknown";
+          this.state = params.data.state;
+          this.comment = params.data.comment;
+        },
+        template: {element: "state-default-tr-template"}
+      });
+    """
+
+  "Step 17: Add sorting":
+    prefix: "s17"
+    body: """
+    var view = {
+      grep: ko.observable().extend({rateLimit: 200}),
+      sort_by: ko.observable(),
+      sort_click: function (vm, evt) {
+        view.sort_by(evt.target.innerText);
       }
+    };
+    """
+
+  "Step 18: Sort the observables":
+    prefix: "s18"
+    body: """
+      var unsorted_defaults = ko.observableArray(window.hosd)
+        .filter(filter)
+        .extend({rateLimit: 200});
+      var sortable_defaults = ko.observableArray(unsorted_defaults());
+      unsorted_defaults.subscribe(sortable_defaults)
+
+      function year_sort(a, b) {
+        return a.year == b.year ? 0 : (a.year < b.year ? -1 : 1);
+      }
+
+      function state_sort(a, b) {
+        return a.state == b.state ? 0 : (a.state < b.state ? -1 : 1);
+      }
+
+      view.defaults = ko.computed(function () {
+        var sort_by = view.sort_by();
+        var items = sortable_defaults();
+        if (!sort_by || sort_by == 'None') {
+          return items;
+        }
+        return items.sort(sort_by == 'State' ? state_sort : year_sort)
+      });
+    """
+
+  "Step 19: Fix the observable sorting":
+    prefix: "s19"
+    body: """
+      var view = {
+        grep: ko.observable().extend({rateLimit: 200}),
+        sort_by: ko.observable(),
+        defaults: ko.observableArray(),
+        sort_click: function (vm, evt) {
+          view.sort_by(evt.target.innerText);
+        },
+      };
+
+      var unsorted_defaults = ko.observableArray(window.hosd).filter(filter);
+
+      function year_sort(a, b) {
+        return a.year == b.year ? 0 : (a.year < b.year ? -1 : 1);
+      }
+
+      function state_sort(a, b) {
+        return a.state == b.state ? 0 : (a.state < b.state ? -1 : 1);
+      }
+
+      function sort_defaults_fn() {
+        var sort_by = view.sort_by();
+        var items = unsorted_defaults().concat();
+        if (!sort_by || sort_by == 'None') {
+          view.defaults(items);
+        }
+        view.defaults(items.sort(sort_by == 'State' ? state_sort : year_sort))
+      }
+      var sort_defaults = _.debounce(sort_defaults_fn, 200);
+
+      unsorted_defaults.subscribe(sort_defaults);
+      view.sort_by.subscribe(sort_defaults);
+      sort_defaults();
     """

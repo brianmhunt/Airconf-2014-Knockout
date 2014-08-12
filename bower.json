@@ -22,7 +22,7 @@
   "dependencies": {
     "knockout": "~3.2.0",
     "knockout.punches": "~0.3.1",
-    "knockout-es5": "*",
-    "knockout-projections": "~1.1.0-pre"
+    "knockout-projections": "~1.1.0-pre",
+    "lodash": "~2.4.1"
   }
 }

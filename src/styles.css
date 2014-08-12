@@ -11,7 +11,7 @@ input {
   width: 80%;
   padding: 5px 0.5em;
   border-radius: 12px;
-  margin: 1ex auto;
+  margin: 2ex auto;
   font-size: 18px;
   outline: none;
   text-align: center;
@@ -25,4 +25,33 @@ input:focus {
 h1 {
   text-align: center;
   font-weight: normal;
+}
+
+table {
+  width: 80%;
+  margin: 15px auto;
+}
+
+th {
+  border-bottom: 1px solid gray;
+}
+
+div.sort {
+  text-align: center;
+}
+
+button {
+  cursor: pointer;
+  font-size: 18px;
+  padding: 8px 1em;
+  background-color: #2e50d8;
+  color: white;
+  border-radius: 15px;
+  outline: none;
+  border: 1px solid gray;
+  box-shadow: 3px 3px 3px #888;
+}
+
+button:active {
+  box-shadow: none;
 }

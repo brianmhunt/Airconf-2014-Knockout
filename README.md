@@ -6,6 +6,19 @@ on August 14, 2014.
 
 See also: [Brian's Blog](https://brianmhunt.github.io)
 
+Demonstrated plugins:
+----
+
+- Knockout Projections
+- Knockout Punches
+
+
+Web Components
+---
+- [Architecting large Single Page Applications with Knockout.js](http://blog.stevensanderson.com/2014/06/11/architecting-large-single-page-applications-with-knockout-js/)
+- [Knockout.js 3.2 Preview : Components](http://www.knockmeout.net/2014/06/knockout-3-2-preview-components.html)
+- [github/knockout/knockout#1273 Components and custom elements](https://github.com/knockout/knockout/issues/1273)
+
 ----
 
 Tip: Finding packages by Knockout maintainers:

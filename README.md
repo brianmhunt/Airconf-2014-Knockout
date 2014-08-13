@@ -4,6 +4,10 @@ Dynamic HTML with Knockout <small>Brian M Hunt</small>
 Presented at: [Airconf 2014](http://www.airpair.com/airconf2014)
 on August 14, 2014.
 
+Follow along at:
+[brianmhunt.github.io/airconf-2014](https://brianmhunt.github.io/airconf-2014/).
+
+
 See also: [Brian's Blog](https://brianmhunt.github.io)
 
 Demonstrated plugins:

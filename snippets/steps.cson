@@ -1,6 +1,10 @@
+
+# ----------  TEXT.HTML  ------------
+
 ".text.html":
   "Step 1: Add <script> tags":
     prefix: "s1"
+    part: 1
     body: """
 
     <!-- SCRIPTS -->
@@ -17,6 +21,7 @@
 
   "Step 3: Show the list on the screen":
     prefix: "s3"
+    part: 2
     body: """
       <h1>List of State defaults</h1>
 
@@ -29,30 +34,35 @@
 
   "Step 4: Use Punches {{ }} interpolation":
     prefix: "s4"
+    part: 2
     body: """
       <b>{{ year }}</b> {{ state }}
     """
 
   "Step 6: Add grepping":
     prefix: "s6"
+    part: 3
     body: """
       <input type='text' data-bind='textInput: grep'/>
     """
 
   "Step 10: Change to a web component":
     prefix: "s10"
+    part: 4
     body: """
     <state-default params="data: $data"></state-default>
     """
 
   "Step 12: Add state-default-template <template>":
     prefix: "s12"
+    part: 5
     body: """
       <b>{{ year }}</b> {{ state }}
     """
 
-  "Step 13: Change state template to a <tr>":
+  "Step 13: Uh oh - Change state template to a <tr>":
     prefix: "s13"
+    part: 5
     body: """
       <table>
         <thead>
@@ -72,6 +82,7 @@
 
   "Step 15: Use inline components: binding":
     prefix: "s15"
+    part: 5
     body: """
       <table>
         <thead>
@@ -91,6 +102,7 @@
 
   "Step 16: Add sort-by html":
     prefix: "s16"
+    part: 6
     body: """
       <div class='sort'>
         Sort by ({{ sort_by()|default:"unsorted" }}):<br/>
@@ -100,10 +112,12 @@
       </div>
     """
 
+# ---------   SOURCE.JS    -------------
 
 ".source.js":
   "Step 2: Add KO to my.js":
     prefix: "s2"
+    part: 1
     body: """
     var view = {
       defaults: window.hosd
@@ -114,12 +128,14 @@
 
   "Step 5: Enable punches":
     prefix: "s5"
+    part: 2
     body: """
       ko.punches.enableAll();
     """
 
   "Step 7: Use projections to filter the view":
     prefix: "s7"
+    part: 3
     body: """
       function filter(item) {
         if (!view.grep()) {
@@ -138,12 +154,14 @@
 
   "Step 8: Use rate limit to improve performance":
     prefix: "s8"
+    part: 3
     body: """
       grep: ko.observable().extend({rateLimit: 200}),
     """
 
   "Step 9: Using Web Components":
     prefix: "s9"
+    part: 4
     body: """
       ko.components.register("state-default", {
         viewModel: function(params) {
@@ -157,12 +175,14 @@
 
   "Step 11: Switch to template-by-element":
     prefix: "s11"
+    part: 4
     body: """
       template: {element: "state-default-template"}
     """
 
   "Step 14: Change ko.component to -tr":
     prefix: "s14"
+    part: 5
     body: """
       ko.components.register("state-default-tr", {
         viewModel: function(params) {
@@ -176,6 +196,7 @@
 
   "Step 17: Add sorting":
     prefix: "s17"
+    part: 6
     body: """
     var view = {
       grep: ko.observable().extend({rateLimit: 200}),
@@ -188,6 +209,7 @@
 
   "Step 18: Sort the observables":
     prefix: "s18"
+    part: 6
     body: """
       var unsorted_defaults = ko.observableArray(window.hosd)
         .filter(filter)
@@ -215,6 +237,7 @@
 
   "Step 19: Fix the observable sorting":
     prefix: "s19"
+    part: 6
     body: """
       var view = {
         grep: ko.observable().extend({rateLimit: 200}),

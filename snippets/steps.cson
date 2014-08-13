@@ -1,4 +1,6 @@
-
+#
+# Convert these snippets to steps.js with:
+# snippets/ $ coffee -b -c -e "snippets = `cat steps.cson`" > steps.js
 # ----------  TEXT.HTML  ------------
 
 ".text.html":

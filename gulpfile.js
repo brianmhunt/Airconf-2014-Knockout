@@ -9,8 +9,6 @@ var options = {
   port: 2014
 };
 
-
-
 gulp.task('connect', function() {
   gulp.task('connect', function () {
     connect.server(options)

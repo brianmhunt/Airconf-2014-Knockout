@@ -21,7 +21,7 @@
     <script src="./my.js"></script>
     """
 
-  "Step 3: Show the list on the screen":
+  "Step 3: Add a bound list to the screen":
     prefix: "s3"
     part: 2
     body: """
@@ -34,7 +34,7 @@
       </ul>
     """
 
-  "Step 4: Use Punches {{ }} interpolation":
+  "Step 4: Switch to {{ }} interpolation from ko.punches":
     prefix: "s4"
     part: 2
     body: """
@@ -57,7 +57,7 @@
 
   "Step 12: Add state-default-template <template>":
     prefix: "s12"
-    part: 5
+    part: 4
     body: """
       <b>{{ year }}</b> {{ state }}
     """
@@ -82,7 +82,7 @@
       </template>
     """
 
-  "Step 15: Use inline components: binding":
+  # "Step 15: Use the components: binding in a data-bind":
     prefix: "s15"
     part: 5
     body: """
@@ -161,7 +161,7 @@
       grep: ko.observable().extend({rateLimit: 200}),
     """
 
-  "Step 9: Using Web Components":
+  "Step 9: Registering a knockout component for state-default":
     prefix: "s9"
     part: 4
     body: """
@@ -175,14 +175,14 @@
       });
     """
 
-  "Step 11: Switch to template-by-element":
+  "Step 11: Change the template to an element-by-reference":
     prefix: "s11"
     part: 4
     body: """
       template: {element: "state-default-template"}
     """
 
-  "Step 14: Change ko.component to -tr":
+  "Step 14: Change ko.component to <tr>/row":
     prefix: "s14"
     part: 5
     body: """
@@ -196,23 +196,18 @@
       });
     """
 
-  "Step 17: Add sorting":
+  "Step 17: Add sort-by and results to the view":
     prefix: "s17"
     part: 6
     body: """
-    var view = {
-      grep: ko.observable().extend({rateLimit: 200}),
-      sort_by: ko.observable(),
-      sort_click: function (vm, evt) {
-        view.sort_by(evt.target.innerText);
-      }
-    };
-    """
+      var view = {
+        grep: ko.observable().extend({rateLimit: 200}),
+        sort_by: ko.observable(),
+        sort_click: function (vm, evt) {
+          view.sort_by(evt.target.innerText);
+        }
+      };
 
-  "Step 18: Sort the observables":
-    prefix: "s18"
-    part: 6
-    body: """
       var unsorted_defaults = ko.observableArray(window.hosd)
         .filter(filter)
         .extend({rateLimit: 200});
@@ -237,7 +232,7 @@
       });
     """
 
-  "Step 19: Fix the observable sorting":
+  "Step 19: Uh-oh erratic results":
     prefix: "s19"
     part: 6
     body: """
@@ -273,4 +268,43 @@
       unsorted_defaults.subscribe(sort_defaults);
       view.sort_by.subscribe(sort_defaults);
       sort_defaults();
+    """
+
+  "Step 20: Knowing when not to .filter":
+    prefix: "s20"
+    part: 6
+    body: """
+      var view = {
+        grep: ko.observable().extend({rateLimit: 200}),
+        sort_by: ko.observable(),
+        sort_click: function (vm, evt) {
+          view.sort_by(evt.target.innerText);
+        },
+      };
+
+      function year_sort(a, b) {
+        x = _.parseInt(a.year);
+        y = _.parseInt(b.year);
+        return x == y ? 0 : (x < y ? -1 : 1);
+      }
+
+      function state_sort(a, b) {
+        return a.state == b.state ? 0 : (a.state < b.state ? -1 : 1);
+      }
+
+      function compute_defaults() {
+        var items = _(window.hosd)
+          .filter(filter)
+          .value();
+
+        if (view.sort_by() == 'State') {
+          items.sort(state_sort);
+        } else if (view.sort_by()) {
+          items.sort(year_sort);
+        }
+
+        return items;
+      }
+
+      view.defaults = ko.computed(compute_defaults);
     """
